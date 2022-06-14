@@ -1,0 +1,42 @@
+﻿@page "/smartenum"
+@if (state != null)
+{
+    <VMContext VM="SmartEnumVM" TState="ISmartEnumState" OnStateChange="UpdateState">
+        <div>@state?.Greetings</div>
+        <div>
+            <select class="form-control" @bind="state.DropDownValue">
+                <option value="0" disabled>@state.DropDownCaption</option>
+                @foreach (var option in state.DropDownOptions)
+                {
+                    <option @key="option.Id" value="@option.Id">@option.Text</option>
+                }
+            </select>
+            <b>@state.DropDownResult</b>
+        </div>
+    </VMContext>
+}
+
+@code {
+    private ISmartEnumState state;
+
+    public interface ISmartEnumState
+    {
+        string Greetings { get; set; }
+        [Watch] int? DropDownValue { get; set; }
+        string DropDownCaption { get; set; }
+        List<DropDownItem> DropDownOptions { get; set; }
+        string DropDownResult { get; set; }
+    }
+    
+   public class DropDownItem
+   {
+       public int Id { get; set; }
+       public string Text { get; set; }
+   }
+
+    private void UpdateState(ISmartEnumState state)
+    {
+        this.state = state;
+        StateHasChanged();
+    }
+}

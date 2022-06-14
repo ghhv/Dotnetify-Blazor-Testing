@@ -1,0 +1,28 @@
+﻿@page "/twowaybinding"
+
+<VMContext VM="TwoWayBinding" TState="IHelloWorldState" OnStateChange="UpdateState">
+    @if (state != null)
+    {
+        <div>
+            <p>@state?.Greetings</p>
+            <input type="text" @bind="state.Name" />
+        </div>
+    }
+</VMContext>
+
+@code {
+  private IHelloWorldState state;
+
+    public interface IHelloWorldState
+    {
+        string Greetings { get; set; }
+        [Watch] string Name { get; set; }
+    }
+    
+
+    private void UpdateState(IHelloWorldState state)
+    {
+        this.state = state;
+        StateHasChanged();
+    }
+}

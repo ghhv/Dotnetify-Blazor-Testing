@@ -1,0 +1,20 @@
+﻿@page "/basic"
+
+<VMContext VM="HelloWorld" TState="IHelloWorldState" OnStateChange="UpdateState">
+    <div>@state?.Greetings</div>
+</VMContext>
+
+@code {
+    private IHelloWorldState state;
+
+    public interface IHelloWorldState
+    {
+        string Greetings { get; set; }
+    }
+
+    private void UpdateState(IHelloWorldState state)
+    {
+      this.state = state;
+      StateHasChanged();
+    }
+}

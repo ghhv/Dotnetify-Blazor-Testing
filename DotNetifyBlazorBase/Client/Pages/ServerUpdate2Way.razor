@@ -1,0 +1,32 @@
+﻿@page "/serverupdate2way"
+
+<VMContext VM="ServerUpdate2Way" TState="IServerUpdateState" OnStateChange="UpdateState">
+    <div>
+
+        <p>@state?.Greetings</p>
+        <input type="text" @bind="state.FirstName" />
+        <input type="text" @bind="state.LastName" />
+        @* <button onclick="@(() => HandleSubmit())">Submit()</button>*@
+        <button onclick="@HandleSubmit">Submit</button>
+    </div>
+</VMContext>
+
+@code {
+    private IServerUpdateState state;
+
+    public interface IServerUpdateState
+    {
+        string Greetings { get; set; }
+        [Watch] public string FirstName { get; set; }
+        [Watch] public string LastName { get; set; }
+        void Submit();
+    }
+
+    private void HandleSubmit() => state.Submit();
+
+    private void UpdateState(IServerUpdateState state)
+    {
+        this.state = state;
+        StateHasChanged();
+    }
+}

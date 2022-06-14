@@ -1,0 +1,24 @@
+﻿@page "/realtime"
+
+<VMContext VM="RealTime" TState="IRealTime" OnStateChange="UpdateState">
+    <div>
+      <p>@state?.Greetings</p>
+      <p>Server time is: @state?.ServerTime</p>
+    </div>
+</VMContext>
+
+@code {
+    private IRealTime state;
+
+    public interface IRealTime
+    {
+        string Greetings { get; set; }
+        string ServerTime { get; set; }
+    }
+
+    private void UpdateState(IRealTime state)
+    {
+      this.state = state;
+      StateHasChanged();
+    }
+}

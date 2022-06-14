@@ -1,0 +1,47 @@
+﻿@page "/serverupdatesubmit"
+
+<VMContext VM="ServerUpdateSubmit" TState="IServerUpdateState" OnStateChange="UpdateState">
+    <div>
+
+        <p>@state?.Greetings</p>
+        <input type="text" @bind="person.FirstName" />
+        <input type="text" @bind="person.LastName" />
+        @* <button onclick="@(() => HandleSubmit())">Submit()</button>*@
+        <button onclick="@(() => HandleSubmit())">Submit</button>
+        <p>save id: @state?.Id</p>
+    </div>
+</VMContext>
+
+@code {
+    private IServerUpdateState state;
+    private Person person = new Person();
+
+    public interface IServerUpdateState
+    {
+        string Greetings { get; set; }
+        string Id { get; set; }
+        Task Submit(Person person);
+    }
+
+    public class Person
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+    //private void HandleSubmit() => state.Submit(person);
+    private async Task HandleSubmit()
+    {
+        Console.WriteLine($"pre-submit");
+        await state.Submit(person);
+        Console.WriteLine($"do file upload for ID: {state?.Id}");
+    }
+
+   
+
+    private void UpdateState(IServerUpdateState state)
+    {
+        this.state = state;
+        StateHasChanged();
+    }
+}
